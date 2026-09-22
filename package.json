@@ -3,11 +3,16 @@
   "private": true,
   "version": "1.1.0",
   "description": "一个面向个人用户的移动端 Jev 判断工具",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Verseforge/jev-pocket.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "node --watch server.js",
     "start": "node server.js",
-    "check": "node --check server.js && node --check public/app.js && node --check public/sw.js"
+    "check": "node --check server.js && node --check api/analyze.js && node --check lib/analyze.js && node --check public/app.js && node --check public/api-client.js && node --check public/sw.js",
+    "test": "node --test"
   },
   "engines": { "node": ">=20" },
   "dependencies": { "express": "^5.1.0" }

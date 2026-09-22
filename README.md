@@ -4,6 +4,8 @@
 
 它把 TypeSafe / Jev 的结构化接口包装成普通中文界面：粘贴内容、写下问题、选择判断方式，然后直接查看人话结果。页面针对安卓手机设计，并支持添加到主屏幕。
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FVerseforge%2Fjev-pocket)
+
 ## 功能
 
 - 是／否判断、多选一、程度评分
@@ -18,7 +20,7 @@
 ```text
 安卓手机上的 Jev Pocket
         ↓
-Vercel 上的 Express 中转
+Vercel Serverless Function 中转
         ↓
 TypeSafe API
 ```
@@ -54,13 +56,16 @@ npm install
 npm start
 ```
 
-然后打开 <http://localhost:4173>。开发时可运行 `npm run dev`，基础语法检查可运行 `npm run check`。
+然后打开 <http://localhost:4173>。开发时可运行 `npm run dev`，基础语法检查可运行 `npm run check`，自动化测试可运行 `npm test`。
 
 ## 项目文件
 
 ```text
 public/          手机网页和 PWA 文件
-server.js        Express 服务与 TypeSafe 中转
+api/analyze.js   Vercel 上的独立 API 路由
+lib/analyze.js   TypeSafe 请求与响应处理
+server.js        本地开发用 Express 服务
+tests/           API 与错误展示自动化测试
 vercel.json      Vercel 部署配置
 package.json     Node.js 启动脚本与依赖
 ```
@@ -74,6 +79,10 @@ GitHub Pages 只能提供 HTML、CSS、JavaScript 等静态文件，不能运行
 ### Vercel 需要填写 TypeSafe API Key 吗？
 
 不需要。部署完成后，在手机网页右上角的设置中填写即可。
+
+### 页面显示 HTTP 404 或“接口没有部署成功”怎么办？
+
+先在 Vercel 的 **Deployments** 页面确认最新一次部署状态为 **Ready**，再直接打开 `https://你的域名/api/analyze`。正常情况下会看到一段包含“这里只接受 POST 请求”的 JSON；如果仍是 Vercel 的 `NOT_FOUND` 页面，请确认仓库中存在 `api/analyze.js`，然后在最新部署右侧菜单中选择 **Redeploy**。
 
 ### 部署后收费吗？
 

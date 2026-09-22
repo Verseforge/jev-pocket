@@ -1,3 +1,5 @@
+import { readApiResponse } from "./api-client.js";
+
 const $ = s => document.querySelector(s); const $$ = s => [...document.querySelectorAll(s)];
 const readSavedKey = () => { try { return localStorage.getItem("typesafeKey") || "" } catch { return "" } };
 const state = { mode:"noul", key:readSavedKey() };
@@ -39,7 +41,7 @@ $("#analyze").onclick=async()=>{
   if(!text||!question){error.textContent="请先填写内容和问题";return} if(!state.key){openSettings();return}
   const button=$("#analyze");button.disabled=true;button.textContent="正在判断…";
   try{const values=$$("#extraFields input").map(x=>x.value);const payload={text,question,mode:state.mode};if(state.mode==="choice")payload.options=values;if(state.mode==="score")payload.levels=values;
-    const response=await fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json","X-TypeSafe-Key":state.key},body:JSON.stringify(payload)});const data=await response.json();if(!response.ok)throw new Error(data.message);showResult(data.result)
+    const response=await fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json","X-TypeSafe-Key":state.key},body:JSON.stringify(payload)});const data=await readApiResponse(response);showResult(data.result)
   }catch(e){error.textContent=e.message||"暂时无法完成判断"}finally{button.disabled=false;button.textContent="开始判断"}
 };
 $("#reset").onclick=()=>{$("#result").hidden=true;$("#text").focus();scrollTo({top:0,behavior:"smooth"})};
